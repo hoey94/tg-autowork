@@ -26,18 +26,23 @@ CHAT_LINKS = ["https://t.me/M_Team_Chat", "https://t.me/+pjkIHKL3FYw4OWI1"]
 下面简单描述以下如何获得上面的参数，如果你知道如何做，请忽略下面内容。
 
 # 配置
-创建机器人，获取下面参数
+创建机器人，获取参数 BOT_TOKEN
 
-BOT_TOKEN, 将BOT_TOKEN 填写到settings.py MY_NOTIFY_BOT_TOKEN
+将BOT_TOKEN 填写到settings.py MY_NOTIFY_BOT_TOKEN
 
-到TG创建群组，将机器人拉到群组，获取下面群组参数
+到TG创建群组，将机器人拉到群组，获取下面群组参数 CHAT_ID 
 
-CHAT_ID , 将BOT_TOKEN 填写到settings.py MY_NOTIFY_CHAT_ID
+将CHAT_ID 填写到settings.py MY_NOTIFY_CHAT_ID
 
 通过https://my.telegram.org/apps 这个网站，创建application应用，获得API_ID和API_HASH 填写到settings.py
 
 PHONE_NUM 记得改成自己的
 
-CHAT_LINKS 是要监控的群组信息，比如我要监控MT群组，找到群组的分享链接"https://t.me/M_Team_Chat
+CHAT_LINKS 是要监控的群组信息，比如我要监控MT群组，找到群组的分享链接https://t.me/M_Team_Chat
 
 其他群组以此类推
+
+
+# 调试
+
+配置完事以后，分别运行上面两个主程序，测试一下看能不能推送tg群组，注意查看日志观察错误记录
