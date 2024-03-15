@@ -26,8 +26,6 @@ class Settings():
     API_HASH = '54a599d3f86b00ab3eefe718ce56f4e01'
     # TG监控： 需要登陆TG手机号
     PHONE_NUM = '+158666642921'
-    # TG监控： 需要爬取的群组
-    CHAT_GROUPS = ['https://t.me/+KCkEpVCikBZjZjQ1']
     # TG监控： 缓存文件，用于存储消息最新偏移量
     TEMP_TG_MSG_FILE = './simple_cache.txt'
     # TG监控： 过滤规则
