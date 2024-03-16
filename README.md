@@ -2,6 +2,11 @@
 - en [English](README.md)
 - zh_CN [简体中文](readme/README.zh_CN.md)
 
+<p align="center'>
+<a href="readme/README.zh_CN.md">简体中文</a>|<a href="./README.md">English</a>
+</p>
+
+
 # Background
 
 Main running programs:
