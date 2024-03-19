@@ -66,13 +66,6 @@ def tlg_get_basic_info(client, chat):
     '''Get basic information (id, title, name, num_users, num_messages) from a group/channel/chat'''
     # Get the corresponding chat entity
     chat_entity = client.get_entity(chat)
-    # Get the number of users in the chat
-    num_members_offset = client(GetParticipantsRequest(channel=chat_entity, \
-                                                       filter=ChannelParticipantsSearch(''), offset=0, limit=0,
-                                                       hash=0)).count
-    num_members = client(GetParticipantsRequest(channel=chat_entity, \
-                                                filter=ChannelParticipantsSearch(''), offset=num_members_offset,
-                                                limit=0, hash=0)).count
     # Get messages data from the chat and extract the usefull data related to chat
     msgs = client.get_messages(chat_entity, limit=1)
     basic_info = OrderedDict \
@@ -80,7 +73,6 @@ def tlg_get_basic_info(client, chat):
             ("id", msgs[0].chat_id), \
             ("title", msgs[0].chat.title), \
             ("username", msgs[0].chat.username), \
-            ("num_members", num_members), \
             ("num_messages", msgs.total), \
             ("supergroup", msgs[0].chat.megagroup) \
             ])
@@ -147,17 +139,12 @@ def tlg_get_messages(client, chat, num_msg, offset_id=None):
     # Build our messages data structures and add them to the list
     for msg in msgs:
         try:
-            msg_sender = msg.sender.first_name
-            if msg.sender.last_name:
-                msg_sender = "{} {}".format(msg_sender, msg.sender.last_name)
-            if msg.sender.username:
-                msg_sender = "{} ({})".format(msg_sender, msg.sender.username)
             msg_sent_date = "{}/{}/{}".format(msg.date.day, msg.date.month, msg.date.year)
             msg_sent_time = "{}:{}:{}".format(msg.date.hour, msg.date.minute, msg.date.second)
             msg_data = OrderedDict \
                     ([ \
                     ("id", msg.id), ("text", msg.message), ("sent_time", msg_sent_time), \
-                    ("sent_date", msg_sent_date), ("sender_user", msg_sender), \
+                    ("sent_date", msg_sent_date), \
                     ("sender_user_id", msg.sender.id), ("reply_to", msg.reply_to_msg_id) \
                     ])
             messages.append(msg_data)

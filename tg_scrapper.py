@@ -11,6 +11,9 @@ from util.tg_scrapper_utils import tlg_connect, tlg_get_basic_info, tlg_get_mess
 
 
 def _check(msg_content, filter_list):
+    if not msg_content:
+        return False
+
     for kw in filter_list:
         if kw in msg_content:
             return True
@@ -68,12 +71,12 @@ def get_notify_msg(tg_client, chat_link, msg_num, last_max_offset_id=None):
     notify_msg = None
     if tg_client is not None:
         # Get chat basic info
-        print('开始获取群组基础信息...')
+        # print('开始获取群组基础信息...')
         chat_info = tlg_get_basic_info(tg_client, chat_link)
         group_name = chat_info['title']
         print(f'获取【{group_name}】群组基础成功...')
         # 获取消息
-        print(f'开始获取群组聊天信息，从消息偏移{last_max_offset_id}开始，待拉取{msg_num}条记录...')
+        print(f'开始获取群组聊天信息，从消息偏移{last_max_offset_id}开始...')
         messages = tlg_get_messages(tg_client, chat_link, msg_num, offset_id=last_max_offset_id)
         save_cache(chat_link, messages)
         # 过滤并整理新的格式
@@ -96,10 +99,16 @@ if __name__ == "__main__":
     notify_msg_list = []
 
     for chat_link in chat_links:
-        notify_msg = get_notify_msg(client, chat_link, 10, cache.get(chat_link))
+        last_max_offset_id = cache.get(chat_link)
+        query_limit_size = 10
+        if last_max_offset_id:
+            query_limit_size =Settings.QUERY_LIMIT_SIZE
+
+        notify_msg = get_notify_msg(client, chat_link, query_limit_size, last_max_offset_id)
         if notify_msg:
             notify_msg_list.append(notify_msg)
 
-    msg = "\n".join(notify_msg_list)
-    # 推送TG
-    send_message_to_notify_group(Settings.MY_NOTIFY_CHAT_ID, msg)
+    if len(notify_msg_list) != 0:
+        msg = "\n".join(notify_msg_list)
+        # 推送TG
+        send_message_to_notify_group(Settings.MY_NOTIFY_CHAT_ID, msg)
